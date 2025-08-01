@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS
+        "src/pmu_axp2101.c"
+        "src/pmu_regulators.c"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        driver
+)
