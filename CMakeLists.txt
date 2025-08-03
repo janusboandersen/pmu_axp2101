@@ -5,5 +5,9 @@ idf_component_register(
     INCLUDE_DIRS
         "include"
     REQUIRES
-        driver
+        esp_common      # uses esp_err.h in public headers
+    PRIV_REQUIRES
+        esp_log
+        esp_driver_i2c
+        freertos
 )
