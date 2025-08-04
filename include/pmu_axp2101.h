@@ -1,11 +1,12 @@
 /*
  * Minimal implementation of the AXP2101 PMU/PMIC.
- * Targeted at ESP32S3, and ESP-IDF framework ver. >= v5.2 (NEW I2C API).
+ * Targeted at ESP32S3, and ESP-IDF framework ver. >= v5.5(NEW I2C API).
  * 
  * The available regulators are defined in pmu_regulators.h / .c.
  * 
  * Configured for the LilyGo-T-SIM7080G v1.0 board.
- * Version: 1.0
+ 
+ * Version: See idf_component.yml
  * Janus Andersen, August 2025.
  */
 
@@ -27,8 +28,8 @@ esp_err_t pmu_init(void);
 esp_err_t pmu_deinit(void);
 
 // Get and set mode and voltage of regulators
-esp_err_t pmu_get_regulator_state(PmuRegulatorConfig*);
-esp_err_t pmu_set_regulator_state(PmuRegulatorConfig*);
+esp_err_t pmu_get_regulator_state(pmu_regulator_cfg_t*);
+esp_err_t pmu_set_regulator_state(pmu_regulator_cfg_t*);
 
 // Enable power to the modem on DC/DC3 and level shifter on BLDO1.
 //esp_err_t pmu_enable_modem_power(void);

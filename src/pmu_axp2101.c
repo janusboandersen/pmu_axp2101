@@ -275,7 +275,7 @@ esp_err_t pmu_write_register_bits(uint8_t reg_addr, uint8_t bit_mask, uint8_t da
  * **************************/
 
 // Get the state from a regulator: Output on/off, voltage level in mV, DVM on/off.
-esp_err_t pmu_get_regulator_state(PmuRegulatorConfig *cfg)
+esp_err_t pmu_get_regulator_state(pmu_regulator_cfg_t *cfg)
 {
     // Fetch voltage control register
     uint8_t volt_reg_val = 0;
@@ -314,7 +314,7 @@ esp_err_t pmu_get_regulator_state(PmuRegulatorConfig *cfg)
 }
 
 // Set the state of a regulator: Output on/off, voltage in mV, DVM on/off.
-esp_err_t pmu_set_regulator_state(PmuRegulatorConfig *cfg) 
+esp_err_t pmu_set_regulator_state(pmu_regulator_cfg_t *cfg) 
 {
     // Involves read-modify-write (RMW) to two different registers
     // while holding mutex to avoid race conditions on the regulator.

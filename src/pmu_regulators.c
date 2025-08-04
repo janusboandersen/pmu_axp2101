@@ -16,7 +16,7 @@
  *      DC/DC 3
  * ****************/
 
-PmuRegulatorCtrl PMU_DC3 = {
+pmu_regulator_ctrl_t PMU_DC3 = {
     .volt_reg_addr = XPOWERS_AXP2101_DC_VOL2_CTRL,           // reg 0x84
     .dvm_bit_mask = _BIT(7),
     .level_bit_mask = MASK_BITS_6_0,                         // bits 6:0
@@ -76,7 +76,7 @@ uint8_t pmu_dc3_mv_to_code(uint16_t voltage_mv)
  *      BLDO1
  * ****************/
 
-PmuRegulatorCtrl PMU_BLDO1 = {
+pmu_regulator_ctrl_t PMU_BLDO1 = {
     .volt_reg_addr = XPOWERS_AXP2101_LDO_VOL4_CTRL,         // reg 0x96
     .dvm_bit_mask = 0,                                      // no DVM
     .level_bit_mask = MASK_BITS_4_0,                        // bits 4:0
