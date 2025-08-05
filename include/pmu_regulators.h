@@ -16,7 +16,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include "AXP2101Constants.h"
+#include "axp2101_constants.h"
 #include "pmu_utils.h"
 
 // Types to manage regulators

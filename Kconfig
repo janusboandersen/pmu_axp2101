@@ -1,0 +1,30 @@
+menu "AXP2101 PMU"
+
+config AXP2101_I2C_ADDR
+    hex "AXP2101 I2C address"
+    default 0x34
+    help
+      7-bit address (without R/W bit). Typical AXP2101 default is 0x34.
+
+config AXP2101_I2C_FREQ_HZ
+    int "I2C bus frequency (Hz)"
+    range 10000 1000000
+    default 100000
+    help
+      Target bus clock for the I2C v2 master.
+
+config AXP2101_ENABLE_IRQ_SUPPORT
+    bool "Enable IRQ handling code"
+    default y
+    help
+      Compile the IRQ path (register map + handler glue). You can still
+      keep it disabled at runtime.
+
+config AXP2101_LOG_LEVEL
+    int "AXP2101 log level"
+    range 0 5
+    default 3
+    help
+      Maps to ESP_LOG_* levels: 0=NONE,1=ERROR,2=WARN,3=INFO,4=DEBUG,5=VERBOSE.
+
+endmenu

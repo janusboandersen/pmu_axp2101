@@ -14,7 +14,6 @@
 #include <assert.h>
 
 #include "pmu_axp2101.h"
-//#include "AXP2101Constants.h"
 
 #include "driver/i2c_master.h"
 #include "esp_err.h"
