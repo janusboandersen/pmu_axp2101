@@ -7,7 +7,6 @@ idf_component_register(
     REQUIRES
         esp_common      # uses esp_err.h in public headers
     PRIV_REQUIRES
-        esp_log
         esp_driver_i2c
         freertos
 )
