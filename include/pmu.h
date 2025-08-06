@@ -57,7 +57,7 @@ typedef struct pmu_regulator_cfg_t {
 } pmu_regulator_cfg_t;
 
 
-// Initialize and deinitialize the bus and device for AXP2101 comms
+// Initialize and deinitialize the bus and device for PMU comms
 esp_err_t pmu_init(i2c_master_bus_config_t, i2c_device_config_t);
 esp_err_t pmu_deinit(void);
 
