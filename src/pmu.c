@@ -1,30 +1,24 @@
 /*
- * The datasheet for the PMU is available at 
- * https://files.waveshare.com/wiki/common/X-power-AXP2101_SWcharge_V1.0.pdf
- * 
- * Control registers in the AXP2101 are all 8 bits (expect for possible the ADC registers).
- * 
+ * Implements serialized device access
  * This library assumes that we own the I2C device. 
  * That may not always be true in practice, so be careful!
  * - See init_master(), which is being used by pmu_init() and vice versa in pmu_deinit().
  * 
- * Janus Andersen, August 2025.
- * 
+ * Janus Andersen, August 2025. 
  */
 #include <assert.h>
 
-#include "pmu_axp2101.h"
-
-#include "driver/i2c_master.h"
+#include "sdkconfig.h"
 #include "esp_err.h"
 #include "esp_check.h"
-#include "sdkconfig.h"
 #include "esp_log.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 
-#define TAG "PMU_AXP2101"
+#include "pmu.h"
+
+#define TAG "PMU"
 
 // handles for bus and PMU
 i2c_master_bus_handle_t master_handle = NULL;
@@ -80,44 +74,31 @@ static inline esp_err_t pmu_lock_or_timeout(TickType_t to_ticks)
  * ********************************/
 
 // set up eps32s3 i2c as master of the bus
-esp_err_t static init_master(void)
+esp_err_t static init_master(i2c_master_bus_config_t i2c_mst_config)
 {
     //TODO: Check if the port is already in existence, if so, just return handle to existing bus.
-    i2c_master_bus_config_t i2c_mst_config = {
-        .clk_source = I2C_CLK_SRC_DEFAULT,
-        .i2c_port = PMU_I2C_PORT,
-        .scl_io_num = PMU_SCL,
-        .sda_io_num = PMU_SDA,
-        .glitch_ignore_cnt = 7,
-        .flags.enable_internal_pullup = false,  // board has 10K pull-ups
-    };
-
     return i2c_new_master_bus(&i2c_mst_config, &master_handle);
 }
 
 // set up the PMU as slave on the bus
-esp_err_t static init_slave(void)
+esp_err_t static init_slave(i2c_device_config_t dev_cfg)
 {
-    i2c_device_config_t dev_cfg = {
-        .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = PMU_I2C_ADDR,
-        .scl_speed_hz = PMU_FREQ_HZ,
-    };
-
     return i2c_master_bus_add_device(master_handle, &dev_cfg, &pmu_handle);
 }
 
 // Init master and slave so we can talk to the PMU. 
 // They will be kept alive throughout the duration of the program.
 // TODO: Do nothing if already set up, make thread safe
-esp_err_t pmu_init(void)
+esp_err_t pmu_init(
+    i2c_master_bus_config_t i2c_mst_config, 
+    i2c_device_config_t dev_cfg)
 {
     if (!s_pmu_mtx) { pmu_init_mutex(); }
     s_pmu_shutting_down = false;            // reset (it might've been on from a prev. shutdown)
 
     // TODO: If the bus master already exists, use that instead of a new
     ESP_LOGD(TAG, "Initializing the I2C bus master.");
-    esp_err_t err = init_master();
+    esp_err_t err = init_master(i2c_mst_config);
     if (err != ESP_OK) {
         pmu_deinit_mutex();
         ESP_LOGE(TAG, "I2C bus master init, failed: %s", esp_err_to_name(err));
@@ -125,7 +106,7 @@ esp_err_t pmu_init(void)
     }
     
     ESP_LOGD(TAG, "Initializing PMU (AXP2101) on the I2C bus.");
-    err = init_slave();
+    err = init_slave(dev_cfg);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "I2C PMU init. failed: %s", esp_err_to_name(err));
         i2c_del_master_bus(master_handle);

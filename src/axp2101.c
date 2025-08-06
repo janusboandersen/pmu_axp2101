@@ -8,8 +8,26 @@
  * 
  */
 
-#include <stdint.h>
-#include "pmu_regulators.h"
+#include "axp2101.h"
+
+/* ****************
+ *     I2C CFG
+ * ****************/
+
+i2c_master_bus_config_t pmu_axp2101_i2c_mst_config = {
+    .clk_source = I2C_CLK_SRC_DEFAULT,
+    .i2c_port = PMU_I2C_PORT,
+    .scl_io_num = PMU_SCL,
+    .sda_io_num = PMU_SDA,
+    .glitch_ignore_cnt = 7,
+    .flags.enable_internal_pullup = false,  // board has 10K pull-ups
+};
+
+i2c_device_config_t pmu_axp2101_dev_cfg = {
+    .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+    .device_address = PMU_I2C_ADDR,
+    .scl_speed_hz = PMU_FREQ_HZ,
+};
 
 
 /* ****************
