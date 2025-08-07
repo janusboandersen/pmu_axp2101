@@ -1,27 +1,54 @@
-menu "AXP2101 PMU"
+menu "PMU (AXP2101)"
 
-config AXP2101_I2C_ADDR
-    hex "AXP2101 I2C address"
-    default 0x34
+config PMU_I2C_PORT
+    hex "I2C port for PMU (AXP2101)"
+    range 0 1
+    default 0
     help
-      7-bit address (without R/W bit). Typical AXP2101 default is 0x34.
+      ESP32 I2C hardware port (controller) connecting to the PMU (AXP2101).
 
-config AXP2101_I2C_FREQ_HZ
+config PMU_I2C_SDA
+    int "GPIO pin for I2C SDA"
+    range 1 48
+    default 15
+    help
+      GPIO number for serial data bus (SDA). Check pin-map.
+
+config PMU_I2C_SCL
+    int "GPIO pin for I2C SCL"
+    range 1 48
+    default 7
+    help
+      GPIO number for serial clock bus (SCL). Check pin-map.
+
+config PMU_I2C_FREQ_HZ
     int "I2C bus frequency (Hz)"
-    range 10000 1000000
+    range 10000 400000
     default 100000
     help
       Target bus clock for the I2C v2 master.
 
-config AXP2101_ENABLE_IRQ_SUPPORT
-    bool "Enable IRQ handling code"
+config PMU_I2C_ENABLE_PULLUP
+    bool "Enable internal pull-up resistors on I2C bus"
+    default n
+    help
+      Not needed if board has external pull-ups.
+
+config PMU_I2C_ADDR
+    hex "I2C address for PMU (AXP2101)"
+    default 0x34
+    help
+      7-bit address. Typical AXP2101 default is 0x34.
+
+config PMU_ENABLE_IRQ_SUPPORT
+    bool "Enable IRQ handling code (NOT IMPL.)"
     default y
     help
-      Compile the IRQ path (register map + handler glue). You can still
+      NOT IMPLEMENTED. Compile the IRQ path (register map + handler glue). You can still
       keep it disabled at runtime.
 
-config AXP2101_LOG_LEVEL
-    int "AXP2101 log level"
+config PMU_LOG_LEVEL
+    int "PMU log level"
     range 0 5
     default 3
     help
