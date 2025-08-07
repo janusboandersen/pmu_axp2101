@@ -18,12 +18,12 @@
 
 #include "pmu.h"
 
+// Logging
 #define TAG "PMU"
 
 // handles for bus and PMU
 i2c_master_bus_handle_t master_handle = NULL;
 i2c_master_dev_handle_t pmu_handle = NULL;
-
 
 // bool valid_single_bit_mask(uint8_t bit_mask)
 // {
@@ -93,6 +93,8 @@ esp_err_t pmu_init(
     i2c_master_bus_config_t i2c_mst_config, 
     i2c_device_config_t dev_cfg)
 {
+    esp_log_level_set(TAG, CONFIG_PMU_LOG_LEVEL);
+
     if (!s_pmu_mtx) { pmu_init_mutex(); }
     s_pmu_shutting_down = false;            // reset (it might've been on from a prev. shutdown)
 
