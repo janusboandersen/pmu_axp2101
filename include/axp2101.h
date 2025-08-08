@@ -57,3 +57,9 @@ extern pmu_regulator_ctrl_t PMU_BLDO1;
 uint16_t pmu_bldo1_code_to_mv(uint8_t);
 bool pmu_bldo1_is_valid_level(uint16_t);
 uint8_t pmu_bldo1_mv_to_code(uint16_t);
+
+// BLDO2 is an LDO (0.5V-3.5V, max. 300mA)
+extern pmu_regulator_ctrl_t PMU_BLDO2;
+uint16_t pmu_bldo2_code_to_mv(uint8_t);
+bool pmu_bldo2_is_valid_level(uint16_t);
+uint8_t pmu_bldo2_mv_to_code(uint16_t);

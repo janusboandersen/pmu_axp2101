@@ -5,7 +5,6 @@
  * XPOWERS_... macros correspond to the datasheet, but are taken from the XPowers implementation by Lewis X. He.
  * 
  * Janus, August 2025.
- * 
  */
 
 #include "axp2101.h"
@@ -120,4 +119,36 @@ bool pmu_bldo1_is_valid_level(uint16_t voltage_mv) {
 uint8_t pmu_bldo1_mv_to_code(uint16_t voltage_mv) {
     return (uint8_t)(
         (voltage_mv - XPOWERS_AXP2101_BLDO1_VOL_MIN) / XPOWERS_AXP2101_BLDO1_VOL_STEPS);
+}
+
+
+/* ****************
+ *      BLDO2
+ * ****************/
+
+pmu_regulator_ctrl_t PMU_BLDO2 = {
+    .volt_reg_addr = XPOWERS_AXP2101_LDO_VOL5_CTRL,         // reg 0x97
+    .dvm_bit_mask = 0,                                      // no DVM
+    .level_bit_mask = MASK_BITS_4_0,                        // bits 4:0
+    .onoff_reg_addr = XPOWERS_AXP2101_LDO_ONOFF_CTRL0,      // reg 0x90
+    .onoff_bit_mask = _BIT(5),
+    .code_to_mv = pmu_bldo2_code_to_mv,
+    .is_valid_level = pmu_bldo2_is_valid_level,
+    .mv_to_code = pmu_bldo2_mv_to_code
+};
+
+uint16_t pmu_bldo2_code_to_mv(uint8_t code) {
+    return ((uint16_t)code) * XPOWERS_AXP2101_BLDO2_VOL_STEPS + XPOWERS_AXP2101_BLDO2_VOL_MIN;
+}
+
+bool pmu_bldo2_is_valid_level(uint16_t voltage_mv) {
+    if (voltage_mv < XPOWERS_AXP2101_BLDO2_VOL_MIN || voltage_mv > XPOWERS_AXP2101_BLDO2_VOL_MAX) {
+        return false;
+    }
+    return true;
+}
+
+uint8_t pmu_bldo2_mv_to_code(uint16_t voltage_mv) {
+    return (uint8_t)(
+        (voltage_mv - XPOWERS_AXP2101_BLDO2_VOL_MIN) / XPOWERS_AXP2101_BLDO2_VOL_STEPS);
 }
