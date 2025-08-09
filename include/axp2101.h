@@ -27,25 +27,6 @@
 extern i2c_master_bus_config_t pmu_axp2101_i2c_mst_config;
 extern i2c_device_config_t pmu_axp2101_dev_cfg;
 
-// TODO: Get these with Kconfig
-//#define PMU_I2C_PORT    I2C_NUM_0
-//#define PMU_SDA         GPIO_NUM_15
-//#define PMU_SCL         GPIO_NUM_7
-//#define PMU_FREQ_HZ     100000          // 100 kHz, standard mode, lower than typical for LilyGo and ESP32, but board has 10K pullups (slow)
-//#define PMU_I2C_ADDR    AXP2101_SLAVE_ADDRESS
-
-// Enable power to the modem on DC/DC3 and level shifter on BLDO1.
-//esp_err_t pmu_enable_modem_power(void);
-
-// Disable power to the modem and level shifter.
-//esp_err_t pmu_disable_modem_power(void);
-
-// Enable power to the GNSS antenna on BLDO2
-//esp_err_t pmu_enable_gnss_ant_power(void);
-
-// Disable power to the GNSS antenna
-//esp_err_t pmu_disable_gnss_ant_power(void);
-
 // DC/DC 3 is a buck converter (0.5-3.4V, max. 2A)
 extern pmu_regulator_ctrl_t PMU_DC3;
 uint16_t pmu_dc3_code_to_mv(uint8_t);
