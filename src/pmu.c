@@ -360,3 +360,26 @@ esp_err_t pmu_set_regulator_state(pmu_regulator_cfg_t *cfg)
  * LED Control 
  * Blinks to signal state
  * ************************/
+
+
+/* ************************
+ * Convenience getters
+ * Fail on error
+ * ************************/
+
+
+// Get voltage level in mV for a regulator, e.g. PMU_BLDO2 -> 1800 (mV)
+uint16_t pmu_get_regulator_level(pmu_regulator_ctrl_t reg_ctrl)
+{
+    pmu_regulator_cfg_t regulator = { .regulator = &reg_ctrl };
+    ESP_ERROR_CHECK(pmu_get_regulator_state(&regulator));
+    return regulator.level_mv;
+}
+
+// Get output mode (on/off) for a regulator, e.g. PMU_BLDO2 -> true
+bool pmu_get_regulator_is_on(pmu_regulator_ctrl_t reg_ctrl)
+{
+    pmu_regulator_cfg_t regulator = { .regulator = &reg_ctrl };
+    ESP_ERROR_CHECK(pmu_get_regulator_state(&regulator));
+    return (regulator.output == PMU_OUTPUT_ON);
+}

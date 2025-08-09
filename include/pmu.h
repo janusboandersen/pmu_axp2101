@@ -65,4 +65,6 @@ esp_err_t pmu_deinit(void);
 esp_err_t pmu_get_regulator_state(pmu_regulator_cfg_t*);
 esp_err_t pmu_set_regulator_state(pmu_regulator_cfg_t*);
 
-
+// Get voltage level and output mode
+uint16_t pmu_get_regulator_level(pmu_regulator_ctrl_t);
+bool pmu_get_regulator_is_on(pmu_regulator_ctrl_t);
