@@ -7,6 +7,7 @@ idf_component_register(
     REQUIRES
         esp_common      # uses esp_err.h in public headers
         esp_driver_i2c  # same
+        esp_driver_gpio # For the board-aware header-only lib.
     PRIV_REQUIRES
         freertos        # freertos only used in impl.
 )
